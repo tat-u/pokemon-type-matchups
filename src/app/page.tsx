@@ -3,11 +3,12 @@
 import { PokemonTypeCard } from "@/stories/molecules/PokemonTypeCard";
 import { PokemonH1 } from "@/stories/atoms/PokemonH1";
 import { PokemonH2 } from "@/stories/atoms/PokemonH2";
+import { generateRecommendedChart } from "@/models/pokemonTypeChart";
 import {
-  generateRecommendedChart,
-  getPokemonTypeName,
-} from "@/models/pokemonTypeChart";
-import { PokemonType, pokemonI18n } from "@/models/pokemonDefinitions";
+  PokemonType,
+  pokemonType,
+  pokemonI18n,
+} from "@/models/pokemonDefinitions";
 import { ThemeController } from "@/stories/atoms/ThemeController";
 import { PokemonTypeDropdown } from "@/stories/molecules/PokemonTypeDropdown";
 import { useState } from "react";
@@ -43,8 +44,8 @@ export default function Home() {
     canInflictGoodDamageAgainst,
     hasPoorDefenseAgainst,
     canInflictPoorDamageAgainst,
-    recommendationA,
-    recommendationB,
+    maybeGoodDamage,
+    maybeGoodDefense,
   } = generateRecommendedChart(playerTypeA, playerTypeB, playerAttackType);
 
   return (
@@ -98,11 +99,11 @@ export default function Home() {
       <div className="flex flex-wrap gap-2 justify-around ">
         {canInflictGoodDamageAgainst.map((entry) => (
           <PokemonTypeCard
-            key={entry.pokemonType}
-            pokemonType={entry.pokemonType}
+            key={entry.type}
+            type={entry.type}
             percentage={entry.damageMultiplierPercent}
           >
-            {getPokemonTypeName(entry.pokemonType, lang)}
+            {pokemonType[entry.type].name[lang]}
           </PokemonTypeCard>
         ))}
       </div>
@@ -110,11 +111,11 @@ export default function Home() {
       <div className="flex flex-wrap gap-2 justify-around">
         {hasGoodDefenseAgainst.map((entry) => (
           <PokemonTypeCard
-            key={entry.pokemonType}
-            pokemonType={entry.pokemonType}
+            key={entry.type}
+            type={entry.type}
             percentage={entry.damageMultiplierPercent}
           >
-            {getPokemonTypeName(entry.pokemonType, lang)}
+            {pokemonType[entry.type].name[lang]}
           </PokemonTypeCard>
         ))}
       </div>
@@ -123,11 +124,11 @@ export default function Home() {
       <div className="flex flex-wrap gap-2 justify-around ">
         {canInflictPoorDamageAgainst.map((entry) => (
           <PokemonTypeCard
-            key={entry.pokemonType}
-            pokemonType={entry.pokemonType}
+            key={entry.type}
+            type={entry.type}
             percentage={entry.damageMultiplierPercent}
           >
-            {getPokemonTypeName(entry.pokemonType, lang)}
+            {pokemonType[entry.type].name[lang]}
           </PokemonTypeCard>
         ))}
       </div>
@@ -135,36 +136,36 @@ export default function Home() {
       <div className="flex flex-wrap gap-2 justify-around ">
         {hasPoorDefenseAgainst.map((entry) => (
           <PokemonTypeCard
-            key={entry.pokemonType}
-            pokemonType={entry.pokemonType}
+            key={entry.type}
+            type={entry.type}
             percentage={entry.damageMultiplierPercent}
           >
-            {getPokemonTypeName(entry.pokemonType, lang)}
+            {pokemonType[entry.type].name[lang]}
           </PokemonTypeCard>
         ))}
       </div>
       <PokemonH1>{pokemonI18n.recommendation[lang]}</PokemonH1>
-      <PokemonH2>{pokemonI18n.recommendationA[lang]}</PokemonH2>
+      <PokemonH2>{pokemonI18n.maybeGoodDamage[lang]}</PokemonH2>
       <div className="flex flex-wrap gap-2 justify-around ">
-        {recommendationA.map((entry) => (
+        {maybeGoodDamage.map((entry) => (
           <PokemonTypeCard
-            key={entry.pokemonType}
-            pokemonType={entry.pokemonType}
+            key={entry.type}
+            type={entry.type}
             percentage={entry.damageMultiplierPercent}
           >
-            {getPokemonTypeName(entry.pokemonType, lang)}
+            {pokemonType[entry.type].name[lang]}
           </PokemonTypeCard>
         ))}
       </div>
-      <PokemonH2>{pokemonI18n.recommendationB[lang]}</PokemonH2>
+      <PokemonH2>{pokemonI18n.maybeGoodDefense[lang]}</PokemonH2>
       <div className="flex flex-wrap gap-2 justify-around ">
-        {recommendationB.map((entry) => (
+        {maybeGoodDefense.map((entry) => (
           <PokemonTypeCard
-            key={entry.pokemonType}
-            pokemonType={entry.pokemonType}
+            key={entry.type}
+            type={entry.type}
             percentage={entry.damageMultiplierPercent}
           >
-            {getPokemonTypeName(entry.pokemonType, lang)}
+            {pokemonType[entry.type].name[lang]}
           </PokemonTypeCard>
         ))}
       </div>

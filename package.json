@@ -15,9 +15,7 @@
     "daisyui": "^5.0.46",
     "next": "15.3.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-hook-form": "^7.59.0",
-    "zod": "^3.25.71"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.0.1",

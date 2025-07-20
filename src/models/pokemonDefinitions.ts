@@ -1,7 +1,4 @@
-/**
- * NOTE: Should be imported in this module only
- */
-export const _pokemonTypes = [
+export const pokemonTypeArray = [
   "normal", // 0
   "fire", // 1
   "water", // 2
@@ -22,7 +19,9 @@ export const _pokemonTypes = [
   "fairy", // 17
 ] as const;
 
-export type PokemonType = (typeof _pokemonTypes)[number];
+export type PokemonType = (typeof pokemonTypeArray)[number];
+
+export type PokemonTypeNone = "none";
 
 export type Vector18 = [
   number, // 0
@@ -66,6 +65,9 @@ export const effectivenessTable = {
   fairy: [0, -1, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 0, 0, 1, 1, -1, 0],
 } as const satisfies Record<PokemonType, Vector18>;
 
+/**
+ * NOTE: Defensiveness table is just a transpose of the effectiveness table.
+ */
 export const defensivenessTable = {
   normal: [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, -2, 0, 0, 0, 0],
   fire: [0, -1, 1, 0, -1, -1, 0, 0, 1, 0, 0, -1, 1, 0, 0, 0, -1, -1],
@@ -92,7 +94,7 @@ export const noScalingVector = [
 ] as const satisfies Vector18;
 
 // PRIVATE
-const pokemonTypeColors = {
+const pokemonTypeColor = {
   normal: "#A1ABB3",
   fire: "#C73637",
   water: "#2975D6",
@@ -113,110 +115,101 @@ const pokemonTypeColors = {
   fairy: "#E667E6",
 } as const satisfies Record<PokemonType, string>;
 
-export const pokemonTypes: Record<
-  PokemonType,
-  { index: number; name: Record<SupportedLanguages, string>; color: string }
-> = {
+export const pokemonType = {
   normal: {
     index: 0,
     name: { en: "Normal", ja: "ノーマル" },
-    color: pokemonTypeColors.normal,
+    color: pokemonTypeColor.normal,
   },
   fire: {
     index: 1,
     name: { en: "Fire", ja: "ほのお" },
-    color: pokemonTypeColors.fire,
+    color: pokemonTypeColor.fire,
   },
   water: {
     index: 2,
     name: { en: "Water", ja: "みず" },
-    color: pokemonTypeColors.water,
+    color: pokemonTypeColor.water,
   },
   electric: {
     index: 3,
     name: { en: "Electric", ja: "でんき" },
-    color: pokemonTypeColors.electric,
+    color: pokemonTypeColor.electric,
   },
   grass: {
     index: 4,
     name: { en: "Grass", ja: "くさ" },
-    color: pokemonTypeColors.grass,
+    color: pokemonTypeColor.grass,
   },
   ice: {
     index: 5,
     name: { en: "Ice", ja: "こおり" },
-    color: pokemonTypeColors.ice,
+    color: pokemonTypeColor.ice,
   },
   fighting: {
     index: 6,
     name: { en: "Fighting", ja: "かくとう" },
-    color: pokemonTypeColors.fighting,
+    color: pokemonTypeColor.fighting,
   },
   poison: {
     index: 7,
     name: { en: "Poison", ja: "どく" },
-    color: pokemonTypeColors.poison,
+    color: pokemonTypeColor.poison,
   },
   ground: {
     index: 8,
     name: { en: "Ground", ja: "じめん" },
-    color: pokemonTypeColors.ground,
+    color: pokemonTypeColor.ground,
   },
   flying: {
     index: 9,
     name: { en: "Flying", ja: "ひこう" },
-    color: pokemonTypeColors.flying,
+    color: pokemonTypeColor.flying,
   },
   psychic: {
     index: 10,
     name: { en: "Psychic", ja: "エスパー" },
-    color: pokemonTypeColors.psychic,
+    color: pokemonTypeColor.psychic,
   },
   bug: {
     index: 11,
     name: { en: "Bug", ja: "むし" },
-    color: pokemonTypeColors.bug,
+    color: pokemonTypeColor.bug,
   },
   rock: {
     index: 12,
     name: { en: "Rock", ja: "いわ" },
-    color: pokemonTypeColors.rock,
+    color: pokemonTypeColor.rock,
   },
   ghost: {
     index: 13,
     name: { en: "Ghost", ja: "ゴースト" },
-    color: pokemonTypeColors.ghost,
+    color: pokemonTypeColor.ghost,
   },
   dragon: {
     index: 14,
     name: { en: "Dragon", ja: "ドラゴン" },
-    color: pokemonTypeColors.dragon,
+    color: pokemonTypeColor.dragon,
   },
   dark: {
     index: 15,
     name: { en: "Dark", ja: "あく" },
-    color: pokemonTypeColors.dark,
+    color: pokemonTypeColor.dark,
   },
   steel: {
     index: 16,
     name: { en: "Steel", ja: "はがね" },
-    color: pokemonTypeColors.steel,
+    color: pokemonTypeColor.steel,
   },
   fairy: {
     index: 17,
     name: { en: "Fairy", ja: "フェアリー" },
-    color: pokemonTypeColors.fairy,
+    color: pokemonTypeColor.fairy,
   },
-} as const;
-
-/**
- * 👇 Localization 👇
- *
- * 📌Other than "specific" Pokemon types
- * 📌Texts for display in the frontend
- */
-
-export type SupportedLanguages = "en" | "ja";
+} as const satisfies Record<
+  PokemonType,
+  { index: number; name: Record<SupportedLanguages, string>; color: string }
+>;
 
 export const pokemonTypeNone = {
   name: { en: "None", ja: "なし" },
@@ -225,6 +218,8 @@ export const pokemonTypeNone = {
   name: Record<SupportedLanguages, string>;
   color: string;
 };
+
+export type SupportedLanguages = "en" | "ja";
 
 export const pokemonI18n = {
   pageTitle: {
@@ -259,11 +254,11 @@ export const pokemonI18n = {
     en: "Rough suggestions",
     ja: "おすすめの相手",
   },
-  recommendationA: {
+  maybeGoodDamage: {
     en: "Opponent's type",
     ja: "相手ポケモンのタイプ",
   },
-  recommendationB: {
+  maybeGoodDefense: {
     en: "Opponent's move type",
     ja: "相手のわざのタイプ",
   },

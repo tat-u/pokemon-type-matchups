@@ -1,17 +1,16 @@
-import { PokemonType } from "@/models/pokemonDefinitions";
+import { PokemonType, pokemonType } from "@/models/pokemonDefinitions";
 import { PokemonChip } from "../atoms/PokemonChip";
-import { getPokemonTypeColor } from "@/models/pokemonTypeChart";
 
-type Props = { children: string; pokemonType: PokemonType; percentage: number };
+type Props = { children: string; type: PokemonType; percentage: number };
 
-export function PokemonTypeCard({ children, pokemonType, percentage }: Props) {
+export function PokemonTypeCard({ children, type, percentage }: Props) {
   return (
     <div
       className={`w-[144px] h-[32px] rounded-lg flex shrink-0 items-center shadow-sm overflow-hidden`}
     >
       <div
         style={{
-          backgroundColor: getPokemonTypeColor(pokemonType),
+          backgroundColor: pokemonType[type].color,
         }}
         className={`w-[8px] h-full`}
       ></div>
