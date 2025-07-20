@@ -1,4 +1,4 @@
-import { _pokemonTypes, PokemonType } from "./pokemonDefinitions";
+import { pokemonTypeArray, PokemonType } from "./pokemonDefinitions";
 
 /**
  * Utility function to get the keys of an object as a typed array.
@@ -19,5 +19,9 @@ export const unTypedIncludes = (array: readonly unknown[], value: unknown) => {
 };
 
 export const isPokemonType = (value: unknown): value is PokemonType => {
-  return unTypedIncludes(_pokemonTypes, value);
+  return unTypedIncludes(pokemonTypeArray, value);
+};
+
+export const unique = <T>(array: Array<T>) => {
+  return [...new Set(array)];
 };

@@ -1,175 +1,124 @@
 import {
   PokemonType,
-  SupportedLanguages,
-  pokemonTypes,
+  pokemonType,
   noScalingVector,
   effectivenessTable,
   defensivenessTable,
-  pokemonTypeNone,
 } from "./pokemonDefinitions";
-import { typedObjectKeys } from "./pokemonUtils";
-
-export const getPokemonTypeIndex = (pokemonType: PokemonType): number => {
-  return pokemonTypes[pokemonType].index;
-};
-
-export const getPokemonTypeColor = (
-  pokemonType: PokemonType | "none"
-): string => {
-  if (pokemonType === "none") {
-    return pokemonTypeNone.color;
-  } else {
-    return pokemonTypes[pokemonType].color;
-  }
-};
-
-export const getPokemonTypeName = (
-  pokemonType: PokemonType | "none",
-  lang: SupportedLanguages
-): string => {
-  if (pokemonType === "none") {
-    return pokemonTypeNone.name[lang];
-  } else {
-    return pokemonTypes[pokemonType].name[lang];
-  }
-};
+import { typedObjectKeys, unique } from "./pokemonUtils";
 
 export const getEffectiveness = (
-  playerAttackType: PokemonType,
-  opponentTypeA: PokemonType,
-  opponentTypeB: PokemonType | null
+  tPlayerMove: PokemonType,
+  tOpponentA: PokemonType,
+  tOpponentB: PokemonType | null
 ) => {
-  const effectivenessVector = effectivenessTable[playerAttackType];
+  const effectivenessVector = effectivenessTable[tPlayerMove];
 
   // NOTE: Opponent's type can be a single type or a dual type
-  const effectivenessA =
-    effectivenessVector[getPokemonTypeIndex(opponentTypeA)];
-  const effectivenessB = opponentTypeB
-    ? effectivenessVector[getPokemonTypeIndex(opponentTypeB)]
+  const effectivenessA = effectivenessVector[pokemonType[tOpponentA].index];
+  const effectivenessB = tOpponentB
+    ? effectivenessVector[pokemonType[tOpponentB].index]
     : 0;
 
   return effectivenessA + effectivenessB;
 };
 
 export const getDefensiveness = (
-  playerTypeA: PokemonType,
-  playerTypeB: PokemonType | null,
-  opponentAttackType: PokemonType
+  tPlayerA: PokemonType,
+  tPlayerB: PokemonType | null,
+  tOpponentMove: PokemonType
 ) => {
   // NOTE: Player's type can be a single type or a dual type
-  const defensivenessVectorA = defensivenessTable[playerTypeA];
-  const defensivenessVectorB = playerTypeB
-    ? defensivenessTable[playerTypeB]
+  const defensivenessVectorA = defensivenessTable[tPlayerA];
+  const defensivenessVectorB = tPlayerB
+    ? defensivenessTable[tPlayerB]
     : noScalingVector;
 
-  const defensivenessA =
-    defensivenessVectorA[getPokemonTypeIndex(opponentAttackType)];
-  const defensivenessB =
-    defensivenessVectorB[getPokemonTypeIndex(opponentAttackType)];
+  const defensivenessA = defensivenessVectorA[pokemonType[tOpponentMove].index];
+  const defensivenessB = defensivenessVectorB[pokemonType[tOpponentMove].index];
 
   return defensivenessA + defensivenessB;
 };
 
 export const getInflictDamageMultiplier = (
-  playerAttackType: PokemonType,
-  opponentTypeA: PokemonType,
-  opponentTypeB: PokemonType | null
+  tPlayerMove: PokemonType,
+  tOpponentA: PokemonType,
+  tOpponentB: PokemonType | null
 ) => {
-  const effectiveness = getEffectiveness(
-    playerAttackType,
-    opponentTypeA,
-    opponentTypeB
-  );
+  const effectiveness = getEffectiveness(tPlayerMove, tOpponentA, tOpponentB);
   return Math.pow(1.6, effectiveness);
 };
 
 export const getReceiveDamageMultiplier = (
-  playerTypeA: PokemonType,
-  playerTypeB: PokemonType | null,
-  opponentAttackType: PokemonType
+  tPlayerA: PokemonType,
+  tPlayerB: PokemonType | null,
+  tOpponentMove: PokemonType
 ) => {
-  const defensiveness = getDefensiveness(
-    playerTypeA,
-    playerTypeB,
-    opponentAttackType
-  );
+  const defensiveness = getDefensiveness(tPlayerA, tPlayerB, tOpponentMove);
   return Math.pow(1.6, defensiveness);
 };
 
-export const generateAttackChart = (playerAttackType: PokemonType) => {
-  return typedObjectKeys(pokemonTypes)
-    .map((pokemonType) => ({
-      pokemonType,
-      getEffectiveness: getEffectiveness(playerAttackType, pokemonType, null),
+export const generateAttackChart = (tPlayerMove: PokemonType) => {
+  return typedObjectKeys(pokemonType)
+    .map((t) => ({
+      pokemonType: t,
       damageMultiplierPercent: Math.round(
-        100 * getInflictDamageMultiplier(playerAttackType, pokemonType, null)
+        100 * getInflictDamageMultiplier(tPlayerMove, t, null)
       ),
     }))
     .sort((a, b) => b.damageMultiplierPercent - a.damageMultiplierPercent);
 };
 
 export const generateDefenseChart = (
-  playerTypeA: PokemonType,
-  playerTypeB: PokemonType | null
+  tPlayerA: PokemonType,
+  tPlayerB: PokemonType | null
 ) => {
-  return typedObjectKeys(pokemonTypes)
-    .map((pokemonType) => ({
-      pokemonType,
-      getDefensiveness: getDefensiveness(playerTypeA, playerTypeB, pokemonType),
+  return typedObjectKeys(pokemonType)
+    .map((t) => ({
+      pokemonType: t,
       damageMultiplierPercent: Math.round(
-        100 * getReceiveDamageMultiplier(playerTypeA, playerTypeB, pokemonType)
+        100 * getReceiveDamageMultiplier(tPlayerA, tPlayerB, t)
       ),
     }))
     .sort((a, b) => a.damageMultiplierPercent - b.damageMultiplierPercent);
 };
 
 export const generateRecommendedChart = (
-  playerTypeA: PokemonType,
-  playerTypeB: PokemonType | null,
-  playerAttackType: PokemonType
+  tPlayerA: PokemonType,
+  tPlayerB: PokemonType | null,
+  tPlayerMove: PokemonType
 ) => {
-  const hasGoodDefenseAgainst = generateDefenseChart(
-    playerTypeA,
-    playerTypeB
-  ).filter((entry) => entry.damageMultiplierPercent < 100);
-  const canInflictGoodDamageAgainst = generateAttackChart(
-    playerAttackType
-  ).filter((entry) => entry.damageMultiplierPercent > 100);
-  const hasPoorDefenseAgainst = generateDefenseChart(
-    playerTypeA,
-    playerTypeB
-  ).filter((entry) => entry.damageMultiplierPercent > 100);
-  const canInflictPoorDamageAgainst = generateAttackChart(
-    playerAttackType
-  ).filter((entry) => entry.damageMultiplierPercent < 100);
-  // Recommendation
-  const { gDmgFiltered: recommendationA, gDefFiltered: recommendationB } =
-    calcRecommendation(
-      JSON.parse(JSON.stringify(canInflictGoodDamageAgainst)),
-      JSON.parse(JSON.stringify(hasGoodDefenseAgainst)),
-      JSON.parse(JSON.stringify(canInflictPoorDamageAgainst)),
-      JSON.parse(JSON.stringify(hasPoorDefenseAgainst))
-    );
+  const hasGoodDefenseAgainst = generateDefenseChart(tPlayerA, tPlayerB).filter(
+    (entry) => entry.damageMultiplierPercent < 100
+  );
+  const canInflictGoodDamageAgainst = generateAttackChart(tPlayerMove).filter(
+    (entry) => entry.damageMultiplierPercent > 100
+  );
+  const hasPoorDefenseAgainst = generateDefenseChart(tPlayerA, tPlayerB).filter(
+    (entry) => entry.damageMultiplierPercent > 100
+  );
+  const canInflictPoorDamageAgainst = generateAttackChart(tPlayerMove).filter(
+    (entry) => entry.damageMultiplierPercent < 100
+  );
+
+  const excludeTypes = unique([
+    ...hasPoorDefenseAgainst.map((entry) => entry.pokemonType),
+    ...canInflictPoorDamageAgainst.map((entry) => entry.pokemonType),
+  ]);
+
+  const maybeGoodAgainst = hasGoodDefenseAgainst.filter((entry) =>
+    excludeTypes.includes(entry.pokemonType)
+  );
+  const maybeBadAgainst = canInflictGoodDamageAgainst.filter((entry) =>
+    excludeTypes.includes(entry.pokemonType)
+  );
 
   return {
     hasGoodDefenseAgainst,
     canInflictGoodDamageAgainst,
     hasPoorDefenseAgainst,
     canInflictPoorDamageAgainst,
-    recommendationA,
-    recommendationB,
+    maybeGoodAgainst,
+    maybeBadAgainst,
   };
-};
-
-// PRIVATE
-// TODO: REFACTOR this to be more readable, typed, and efficient
-const calcRecommendation = (gDmg, gDef, pDmg, pDef) => {
-  const excludeTypes = pDmg.concat(pDef).map((e) => e.pokemonType);
-  const gDmgFiltered = gDmg.filter(
-    (e) => !excludeTypes.includes(e.pokemonType)
-  );
-  const gDefFiltered = gDef.filter(
-    (e) => !excludeTypes.includes(e.pokemonType)
-  );
-  return { gDmgFiltered, gDefFiltered };
 };
