@@ -61,7 +61,7 @@ export const getReceiveDamageMultiplier = (
 export const generateAttackChart = (tPlayerMove: PokemonType) => {
   return typedObjectKeys(pokemonType)
     .map((t) => ({
-      pokemonType: t,
+      type: t,
       damageMultiplierPercent: Math.round(
         100 * getInflictDamageMultiplier(tPlayerMove, t, null)
       ),
@@ -75,7 +75,7 @@ export const generateDefenseChart = (
 ) => {
   return typedObjectKeys(pokemonType)
     .map((t) => ({
-      pokemonType: t,
+      type: t,
       damageMultiplierPercent: Math.round(
         100 * getReceiveDamageMultiplier(tPlayerA, tPlayerB, t)
       ),
@@ -88,29 +88,29 @@ export const generateRecommendedChart = (
   tPlayerB: PokemonType | null,
   tPlayerMove: PokemonType
 ) => {
-  const hasGoodDefenseAgainst = generateDefenseChart(tPlayerA, tPlayerB).filter(
-    (entry) => entry.damageMultiplierPercent < 100
-  );
   const canInflictGoodDamageAgainst = generateAttackChart(tPlayerMove).filter(
     (entry) => entry.damageMultiplierPercent > 100
   );
-  const hasPoorDefenseAgainst = generateDefenseChart(tPlayerA, tPlayerB).filter(
-    (entry) => entry.damageMultiplierPercent > 100
+  const hasGoodDefenseAgainst = generateDefenseChart(tPlayerA, tPlayerB).filter(
+    (entry) => entry.damageMultiplierPercent < 100
   );
   const canInflictPoorDamageAgainst = generateAttackChart(tPlayerMove).filter(
     (entry) => entry.damageMultiplierPercent < 100
   );
+  const hasPoorDefenseAgainst = generateDefenseChart(tPlayerA, tPlayerB).filter(
+    (entry) => entry.damageMultiplierPercent > 100
+  );
 
   const excludeTypes = unique([
-    ...hasPoorDefenseAgainst.map((entry) => entry.pokemonType),
-    ...canInflictPoorDamageAgainst.map((entry) => entry.pokemonType),
+    ...canInflictPoorDamageAgainst.map((entry) => entry.type),
+    ...hasPoorDefenseAgainst.map((entry) => entry.type),
   ]);
 
-  const maybeGoodAgainst = hasGoodDefenseAgainst.filter((entry) =>
-    excludeTypes.includes(entry.pokemonType)
+  const maybeGoodDamage = canInflictGoodDamageAgainst.filter(
+    (entry) => !excludeTypes.includes(entry.type)
   );
-  const maybeBadAgainst = canInflictGoodDamageAgainst.filter((entry) =>
-    excludeTypes.includes(entry.pokemonType)
+  const maybeGoodDefense = hasGoodDefenseAgainst.filter(
+    (entry) => !excludeTypes.includes(entry.type)
   );
 
   return {
@@ -118,7 +118,7 @@ export const generateRecommendedChart = (
     canInflictGoodDamageAgainst,
     hasPoorDefenseAgainst,
     canInflictPoorDamageAgainst,
-    maybeGoodAgainst,
-    maybeBadAgainst,
+    maybeGoodDamage,
+    maybeGoodDefense,
   };
 };

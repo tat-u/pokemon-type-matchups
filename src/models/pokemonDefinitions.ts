@@ -254,11 +254,11 @@ export const pokemonI18n = {
     en: "Rough suggestions",
     ja: "おすすめの相手",
   },
-  recommendationA: {
+  maybeGoodDamage: {
     en: "Opponent's type",
     ja: "相手ポケモンのタイプ",
   },
-  recommendationB: {
+  maybeGoodDefense: {
     en: "Opponent's move type",
     ja: "相手のわざのタイプ",
   },
