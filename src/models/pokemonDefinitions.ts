@@ -66,6 +66,9 @@ export const effectivenessTable = {
   fairy: [0, -1, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 0, 0, 1, 1, -1, 0],
 } as const satisfies Record<PokemonType, Vector18>;
 
+/**
+ * NOTE: Defensiveness table is just a transpose of the effectiveness table.
+ */
 export const defensivenessTable = {
   normal: [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, -2, 0, 0, 0, 0],
   fire: [0, -1, 1, 0, -1, -1, 0, 0, 1, 0, 0, -1, 1, 0, 0, 0, -1, -1],
