@@ -1,103 +1,51 @@
-import Image from "next/image";
+"use client";
+import { Header } from "../components/header";
+import { Sword, Shield } from "lucide-react";
+import { Select } from "../components/select";
 
-export default function Home() {
+export default function Page() {
+  const options = [
+    { value: "none", text: "なし" },
+    { value: "normal", text: "ノーマル" },
+    { value: "fire", text: "ほのお" },
+    { value: "water", text: "みず" },
+    { value: "grass", text: "くさ" },
+  ];
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    <>
+      <Header />
+      <div className="pt-12">
+        <main className="flex flex-col gap-5 items-center p-5">
+          <div className="w-60 text-sm text-center">
+            あなたのポケモンのタイプとわざのタイプから、各タイプの相手ポケモンとの相性を調べます。
+          </div>
+          <div className="w-70 text-sm flex flex-col gap-4">
+            <div className="flex gap-4 items-center">
+              <Sword className="size-5" />
+              このタイプのポケモンを攻撃したときの有利・不利
+            </div>
+            <div className="flex gap-4 items-center">
+              <Shield className="size-5" />
+              このタイプのわざを受けたときの有利・不利
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 text-sm w-60">
+            <div className="flex justify-between items-center">
+              <div>タイプ 1</div>
+              <Select options={options} defaultValue="normal" name="type1" />
+            </div>
+            <div className="flex justify-between items-center">
+              <div>タイプ 2</div>
+              <Select options={options} defaultValue="normal" name="type2" />
+            </div>
+            <div className="flex justify-between items-center">
+              <div>わざのタイプ</div>
+              <Select options={options} defaultValue="normal" name="moveType" />
+            </div>
+          </div>
+        </main>
+      </div>
+    </>
   );
 }
