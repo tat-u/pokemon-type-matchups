@@ -14,38 +14,36 @@ export default function Page() {
 
   return (
     <>
-      <Header />
-      <div className="pt-12">
-        <main className="flex flex-col gap-5 items-center p-5">
-          <div className="w-60 text-sm text-center">
-            あなたのポケモンのタイプとわざのタイプから、各タイプの相手ポケモンとの相性を調べます。
+      <Header className="w-full sticky top-0" />
+      <main className="flex flex-col gap-5 items-center p-5">
+        <div className="w-60 text-sm text-center">
+          あなたのポケモンのタイプとわざのタイプから、各タイプの相手ポケモンとの相性を調べます。
+        </div>
+        <div className="w-70 text-sm flex flex-col gap-4">
+          <div className="flex gap-4 items-center">
+            <Sword className="size-5" />
+            このタイプのポケモンを攻撃したときの有利・不利
           </div>
-          <div className="w-70 text-sm flex flex-col gap-4">
-            <div className="flex gap-4 items-center">
-              <Sword className="size-5" />
-              このタイプのポケモンを攻撃したときの有利・不利
-            </div>
-            <div className="flex gap-4 items-center">
-              <Shield className="size-5" />
-              このタイプのわざを受けたときの有利・不利
-            </div>
+          <div className="flex gap-4 items-center">
+            <Shield className="size-5" />
+            このタイプのわざを受けたときの有利・不利
           </div>
-          <div className="flex flex-col gap-2 text-sm w-60">
-            <div className="flex justify-between items-center">
-              <div>タイプ 1</div>
-              <Select options={options} defaultValue="normal" name="type1" />
-            </div>
-            <div className="flex justify-between items-center">
-              <div>タイプ 2</div>
-              <Select options={options} defaultValue="normal" name="type2" />
-            </div>
-            <div className="flex justify-between items-center">
-              <div>わざのタイプ</div>
-              <Select options={options} defaultValue="normal" name="moveType" />
-            </div>
+        </div>
+        <div className="flex flex-col gap-2 text-sm w-60">
+          <div className="flex justify-between items-center">
+            <div>タイプ 1</div>
+            <Select options={options} defaultValue="normal" name="type1" />
           </div>
-        </main>
-      </div>
+          <div className="flex justify-between items-center">
+            <div>タイプ 2</div>
+            <Select options={options} defaultValue="normal" name="type2" />
+          </div>
+          <div className="flex justify-between items-center">
+            <div>わざのタイプ</div>
+            <Select options={options} defaultValue="normal" name="moveType" />
+          </div>
+        </div>
+      </main>
     </>
   );
 }

@@ -1,24 +1,26 @@
-import Image from "next/image";
 import { cn } from "@/lib/cn";
+import Image from "next/image";
+import type { ComponentProps } from "react";
 
-export const Header = () => {
+export const Header = ({ className, ...props }: ComponentProps<"header">) => {
   return (
     <header
+      {...props}
       className={cn(
-        "fixed top-0 left-0",
-        "flex w-full h-12 px-2",
-        "gap-2 items-center content-center",
-        "border-b border-neutral-200 bg-white"
+        "h-12", // Size
+        "px-2 flex gap-2 items-center", // Layout
+        "border-b border-neutral-200 bg-white", // Style
+        className
       )}
     >
       <Image
         src="/header-logo.png"
-        alt="Header Logo"
+        alt="Pokemon Type Matchups Logo"
         width={32}
         height={32}
         className="size-8"
       />
-      ざっくり相性チェック
+      <span>ざっくり相性チェック</span>
     </header>
   );
 };
