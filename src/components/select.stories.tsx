@@ -15,16 +15,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    name: "type1",
-    options: [
+    items: [
       { value: "none", text: "なし" },
       { value: "normal", text: "ノーマル" },
       { value: "fire", text: "ほのお" },
       { value: "water", text: "みず" },
       { value: "grass", text: "くさ" },
     ],
-    defaultValue: "normal",
-    disabledOptions: ["none"],
+    value: "grass",
     onValueChange: fn(),
   },
 };

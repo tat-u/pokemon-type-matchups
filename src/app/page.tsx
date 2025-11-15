@@ -38,15 +38,15 @@ export default function Page() {
         <div className="flex flex-col gap-3 w-60">
           <div className="flex justify-between items-center">
             <span className="text-sm">タイプ 1</span>
-            <Select options={options} defaultValue="normal" name="type1" />
+            <Select items={options} value="grass" name="type1" />
           </div>
           <div className="flex justify-between items-center">
             <span className="text-sm">タイプ 2</span>
-            <Select options={options} defaultValue="normal" name="type2" />
+            <Select items={options} value="grass" name="type2" />
           </div>
           <div className="flex justify-between items-center">
             <span className="text-sm">わざのタイプ</span>
-            <Select options={options} defaultValue="normal" name="moveType" />
+            <Select items={options} value="grass" name="moveType" />
           </div>
         </div>
       </main>
