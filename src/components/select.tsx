@@ -39,7 +39,7 @@ export const Select = ({
       >
         <div className="flex items-center gap-1">
           {renderTriggerContent?.(selectedItem) ?? (
-            <RadixSelect.Value className="text-sm" />
+            <span className="text-sm">{selectedItem.text}</span>
           )}
         </div>
         <RadixSelect.Icon>
@@ -67,9 +67,7 @@ export const Select = ({
               )}
             >
               {renderItemContent?.(item) ?? (
-                <RadixSelect.ItemText className="text-sm">
-                  {item.text}
-                </RadixSelect.ItemText>
+                <span className="text-sm">{item.text}</span>
               )}
             </RadixSelect.Item>
           ))}
