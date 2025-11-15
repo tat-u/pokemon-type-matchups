@@ -52,6 +52,7 @@ export const Select = ({
           "p-2 flex flex-col", // Layout
           "border border-neutral-200 rounded-sm bg-white shadow-md" // Style
         )}
+        position="popper"
       >
         <RadixSelect.Viewport>
           {items.map((item) => (
