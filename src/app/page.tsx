@@ -1,11 +1,9 @@
 "use client";
 import { useState } from "react";
 
-import { Sword, Shield, Check } from "lucide-react";
-import { Select as RadixSelect } from "radix-ui";
+import { Sword, Shield } from "lucide-react";
 import { Header } from "../components/header";
-import { Select } from "../components/select";
-import { TypeLabel } from "@/components/type-label";
+import { TypeSelect } from "./_components/type-select";
 
 export default function Page() {
   const [type1, setType1] = useState("grass");
@@ -46,37 +44,16 @@ export default function Page() {
         <div className="flex flex-col gap-3 w-60">
           <div className="flex justify-between items-center">
             <span className="text-sm">タイプ 1</span>
-            <Select
+            <TypeSelect
               name="type1"
               items={options}
               value={type1}
               onValueChange={setType1}
-              renderTriggerContent={(item) => (
-                <>
-                  <TypeLabel
-                    type={item.value}
-                    className="rounded-full size-4 shadow-sm"
-                  />
-                  <span className="text-sm">{item.text}</span>
-                </>
-              )}
-              renderItemContent={(item) => (
-                <>
-                  <TypeLabel
-                    type={item.value}
-                    className="rounded-full size-4 shadow-sm"
-                  />
-                  <span className="text-sm">{item.text}</span>
-                  <RadixSelect.ItemIndicator>
-                    <Check className="size-4" />
-                  </RadixSelect.ItemIndicator>
-                </>
-              )}
             />
           </div>
           <div className="flex justify-between items-center">
             <span className="text-sm">タイプ 2</span>
-            <Select
+            <TypeSelect
               name="type2"
               items={options}
               value={type2}
@@ -85,7 +62,7 @@ export default function Page() {
           </div>
           <div className="flex justify-between items-center">
             <span className="text-sm">わざのタイプ</span>
-            <Select
+            <TypeSelect
               name="moveType"
               items={options}
               value={moveType}
