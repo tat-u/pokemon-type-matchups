@@ -1,16 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { ThemeController } from "./ThemeController";
+import { Header } from "./header";
 
 const meta = {
-  title: "atoms/ThemeController",
-  component: ThemeController,
+  component: Header,
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },
-} satisfies Meta<typeof ThemeController>;
+} satisfies Meta<typeof Header>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Example: Story = {};
+export const Primary: Story = {};

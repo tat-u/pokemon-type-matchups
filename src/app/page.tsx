@@ -1,175 +1,103 @@
 "use client";
+import { getEffectiveness } from "@/lib/pokemon";
 
-import { PokemonTypeCard } from "@/stories/molecules/PokemonTypeCard";
-import { PokemonH1 } from "@/stories/atoms/PokemonH1";
-import { PokemonH2 } from "@/stories/atoms/PokemonH2";
-import { generateRecommendedChart } from "@/models/pokemonTypeChart";
-import {
-  PokemonType,
-  pokemonType,
-  pokemonI18n,
-} from "@/models/pokemonDefinitions";
-import { ThemeController } from "@/stories/atoms/ThemeController";
-import { PokemonTypeDropdown } from "@/stories/molecules/PokemonTypeDropdown";
 import { useState } from "react";
-import { useLang } from "@/models/useLang";
-import { LangController } from "@/stories/atoms/LangController";
 
-export default function Home() {
-  const { lang } = useLang();
+import { Sword, Shield } from "lucide-react";
+import { Header } from "../components/header";
+import { TypeSelect } from "./_components/type-select";
+import { MatchupCard } from "@/components/matchup-card";
 
-  const [playerTypeA, setPlayerTypeA] = useState<PokemonType>("normal");
-  const [playerTypeB, setPlayerTypeB] = useState<PokemonType | null>(null);
-  const [playerAttackType, setPlayerAttackType] =
-    useState<PokemonType>("normal");
+import { typeSelectOptions } from "./_constants/type-select-options";
 
-  const handlePlayerTypeAChange = (value: PokemonType | null) => {
-    if (value === null) {
-      throw new Error();
-    }
-    setPlayerTypeA(value);
-  };
-  const handlePlayerTypeBChange = (value: PokemonType | null) => {
-    setPlayerTypeB(value);
-  };
-  const handlePlayerAttackTypeChange = (value: PokemonType | null) => {
-    if (value === null) {
-      throw new Error();
-    }
-    setPlayerAttackType(value);
-  };
+import type { PokemonType } from "@/models/pokemon";
 
-  const {
-    hasGoodDefenseAgainst,
-    canInflictGoodDamageAgainst,
-    hasPoorDefenseAgainst,
-    canInflictPoorDamageAgainst,
-    maybeGoodDamage,
-    maybeGoodDefense,
-  } = generateRecommendedChart(playerTypeA, playerTypeB, playerAttackType);
+export default function Page() {
+  const [type1, setType1] = useState("normal");
+  const [type2, setType2] = useState("none");
+  const [moveType, setMoveType] = useState("normal");
 
   return (
     <>
-      <div className="flex items-center justify-between">
-        <span className="text-shadow-lg/10 font-bold">
-          {pokemonI18n.pageTitle[lang]}
-        </span>
-        <div>
-          <ThemeController />
-          <LangController />
-        </div>
-      </div>
-      <div className="d-divider mt-0 mb-10 h-fit"></div>
+      <Header className="w-full sticky top-0" />
+      <main className="flex flex-col gap-5 items-center p-5">
+        <p className="w-full text-sm text-center">
+          あなたのポケモンのタイプとわざのタイプから、各タイプの相手ポケモンとの相性を調べます。
+        </p>
 
-      <div className="flex justify-between">
-        <div className="flex flex-col items-center">
-          {pokemonI18n.playerTypeA[lang]}
-          <PokemonTypeDropdown
-            name="player_type_a"
-            currentChecked={playerTypeA}
-            excludeTypes={[null, playerTypeB]}
-            lang={lang}
-            handleChange={handlePlayerTypeAChange}
-          />
+        <div className="w-70 flex flex-col gap-3">
+          <div className="flex gap-3 items-center">
+            <Sword className="size-5" />
+            <span className="text-sm w-full">
+              このタイプのポケモンを攻撃したときの有利・不利
+            </span>
+          </div>
+          <div className="flex gap-3 items-center">
+            <Shield className="size-5" />
+            <span className="text-sm w-full">
+              このタイプのわざを受けたときの有利・不利
+            </span>
+          </div>
         </div>
-        <div className="flex flex-col items-center">
-          {pokemonI18n.playerTypeB[lang]}
-          <PokemonTypeDropdown
-            name="player_type_b"
-            currentChecked={playerTypeB}
-            excludeTypes={[playerTypeA]}
-            lang={lang}
-            handleChange={handlePlayerTypeBChange}
-          />
-        </div>
-        <div className="flex flex-col items-center">
-          {pokemonI18n.attackType[lang]}
-          <PokemonTypeDropdown
-            name="player_attack_type"
-            currentChecked={playerAttackType}
-            excludeTypes={[null]}
-            lang={lang}
-            handleChange={handlePlayerAttackTypeChange}
-          />
-        </div>
-      </div>
 
-      <PokemonH1>{pokemonI18n.strongAgainst[lang]}</PokemonH1>
-      <PokemonH2>{pokemonI18n.goodDamageAgainst[lang]}</PokemonH2>
-      <div className="flex flex-wrap gap-2 justify-around ">
-        {canInflictGoodDamageAgainst.map((entry) => (
-          <PokemonTypeCard
-            key={entry.type}
-            type={entry.type}
-            percentage={entry.damageMultiplierPercent}
-          >
-            {pokemonType[entry.type].name[lang]}
-          </PokemonTypeCard>
-        ))}
-      </div>
-      <PokemonH2>{pokemonI18n.goodDefenseAgainst[lang]}</PokemonH2>
-      <div className="flex flex-wrap gap-2 justify-around">
-        {hasGoodDefenseAgainst.map((entry) => (
-          <PokemonTypeCard
-            key={entry.type}
-            type={entry.type}
-            percentage={entry.damageMultiplierPercent}
-          >
-            {pokemonType[entry.type].name[lang]}
-          </PokemonTypeCard>
-        ))}
-      </div>
-      <PokemonH1>{pokemonI18n.weakAgainst[lang]}</PokemonH1>
-      <PokemonH2>{pokemonI18n.poorDamageAgainst[lang]}</PokemonH2>
-      <div className="flex flex-wrap gap-2 justify-around ">
-        {canInflictPoorDamageAgainst.map((entry) => (
-          <PokemonTypeCard
-            key={entry.type}
-            type={entry.type}
-            percentage={entry.damageMultiplierPercent}
-          >
-            {pokemonType[entry.type].name[lang]}
-          </PokemonTypeCard>
-        ))}
-      </div>
-      <PokemonH2>{pokemonI18n.poorDefenseAgainst[lang]}</PokemonH2>
-      <div className="flex flex-wrap gap-2 justify-around ">
-        {hasPoorDefenseAgainst.map((entry) => (
-          <PokemonTypeCard
-            key={entry.type}
-            type={entry.type}
-            percentage={entry.damageMultiplierPercent}
-          >
-            {pokemonType[entry.type].name[lang]}
-          </PokemonTypeCard>
-        ))}
-      </div>
-      <PokemonH1>{pokemonI18n.recommendation[lang]}</PokemonH1>
-      <PokemonH2>{pokemonI18n.maybeGoodDamage[lang]}</PokemonH2>
-      <div className="flex flex-wrap gap-2 justify-around ">
-        {maybeGoodDamage.map((entry) => (
-          <PokemonTypeCard
-            key={entry.type}
-            type={entry.type}
-            percentage={entry.damageMultiplierPercent}
-          >
-            {pokemonType[entry.type].name[lang]}
-          </PokemonTypeCard>
-        ))}
-      </div>
-      <PokemonH2>{pokemonI18n.maybeGoodDefense[lang]}</PokemonH2>
-      <div className="flex flex-wrap gap-2 justify-around ">
-        {maybeGoodDefense.map((entry) => (
-          <PokemonTypeCard
-            key={entry.type}
-            type={entry.type}
-            percentage={entry.damageMultiplierPercent}
-          >
-            {pokemonType[entry.type].name[lang]}
-          </PokemonTypeCard>
-        ))}
-      </div>
-      <div className="my-10"></div>
+        <div className="flex flex-col gap-3 w-60">
+          <div className="flex justify-between items-center">
+            <span className="text-sm">タイプ 1</span>
+            <TypeSelect
+              name="type1"
+              items={typeSelectOptions}
+              value={type1}
+              onValueChange={setType1}
+              disabledItems={["none", type2]}
+            />
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm">タイプ 2</span>
+            <TypeSelect
+              name="type2"
+              items={typeSelectOptions}
+              value={type2}
+              onValueChange={setType2}
+              disabledItems={[type1]}
+            />
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm">わざのタイプ</span>
+            <TypeSelect
+              name="moveType"
+              items={typeSelectOptions}
+              value={moveType}
+              onValueChange={setMoveType}
+              disabledItems={["none"]}
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          {typeSelectOptions.map(({ value, text }) =>
+            value === "none" ? null : (
+              <MatchupCard
+                key={value}
+                type={value}
+                text={text}
+                atkEffectiveness={getEffectiveness(
+                  moveType as PokemonType,
+                  value as PokemonType,
+                  null
+                )}
+                defEffectiveness={
+                  -1 *
+                  getEffectiveness(
+                    value as PokemonType,
+                    type1 as PokemonType,
+                    type2 === "none" ? null : (type2 as PokemonType)
+                  )
+                }
+              />
+            )
+          )}
+        </div>
+      </main>
     </>
   );
 }

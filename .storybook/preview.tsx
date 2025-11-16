@@ -1,5 +1,6 @@
 import type { Preview } from "@storybook/nextjs-vite";
-import "../src/app/globals.css"; // Integrate Tailwind CSS with Storybook
+import "../src/app/globals.css";
+import { notoSansJP } from "../src/lib/font";
 
 const preview: Preview = {
   parameters: {
@@ -17,6 +18,13 @@ const preview: Preview = {
       test: "todo",
     },
   },
+  decorators: [
+    (Story) => (
+      <div className={notoSansJP.className} style={{ padding: "20px" }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default preview;

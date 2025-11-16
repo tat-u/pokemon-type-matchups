@@ -1,52 +1,44 @@
 @import "tailwindcss";
-@plugin "daisyui" {
-  themes: bumblebee --default, halloween --prefersdark, lofi, valentine,
-    caramellatte, autumn, aqua, synthwave, night;
-  prefix: "d-";
-}
 
-/* @theme {
-  --color-pokemon-normal: #a1abb3;
-  --color-pokemon-fire: #c73637;
-  --color-pokemon-water: #2975d6;
-  --color-pokemon-electric: #edbd05;
-  --color-pokemon-grass: #37a320;
-  --color-pokemon-ice: #2fbfcf;
-  --color-pokemon-fighting: #de7400;
-  --color-pokemon-poison: #8f4ac4;
-  --color-pokemon-ground: #804a1f;
-  --color-pokemon-flying: #78a9db;
-  --color-pokemon-psychic: #d64777;
-  --color-pokemon-bug: #8a9919;
-  --color-pokemon-rock: #a8a37b;
-  --color-pokemon-ghost: #6e346e;
-  --color-pokemon-dragon: #4959d1;
-  --color-pokemon-dark: #4a3733;
-  --color-pokemon-steel: #62a2b9;
-  --color-pokemon-fairy: #e667e6;
-} */
-
-/* :root {
+:root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #262626; /* neutral-800 from Tailwind CSS v4.1 */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --color-type-normal: #a1abb3;
+  --color-type-fire: #c73637;
+  --color-type-water: #2975d6;
+  --color-type-electric: #edbd05;
+  --color-type-grass: #37a320;
+  --color-type-ice: #2fbfcf;
+  --color-type-fighting: #de7400;
+  --color-type-poison: #8f4ac4;
+  --color-type-ground: #804a1f;
+  --color-type-flying: #78a9db;
+  --color-type-psychic: #d64777;
+  --color-type-bug: #8a9919;
+  --color-type-rock: #a8a37b;
+  --color-type-ghost: #6e346e;
+  --color-type-dragon: #4959d1;
+  --color-type-dark: #4a3733;
+  --color-type-steel: #62a2b9;
+  --color-type-fairy: #e667e6;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* NOTE: ダークモードを実装したい場合、ここで対応する */
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
 } */

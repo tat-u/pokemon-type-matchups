@@ -12,25 +12,14 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-  ...storybook.configs["flat/recommended"],
-
-  // 以下、ユーザ定義の追加コンフィグ
-  {
-    files: ["**/*.tsx"],
-    languageOptions: { sourceType: "script" },
-    rules: {
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        {
-          argsIgnorePattern: "^_",
-          varsIgnorePattern: "^_",
-          caughtErrorsIgnorePattern: "^_",
-        },
-      ],
-    },
-  },
-];
+const eslintConfig = [...compat.extends("next/core-web-vitals", "next/typescript"), {
+  ignores: [
+    "node_modules/**",
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+  ],
+}, ...storybook.configs["flat/recommended"]];
 
 export default eslintConfig;
