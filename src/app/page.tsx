@@ -5,18 +5,12 @@ import { Sword, Shield } from "lucide-react";
 import { Header } from "../components/header";
 import { TypeSelect } from "./_components/type-select";
 
-export default function Page() {
-  const [type1, setType1] = useState("grass");
-  const [type2, setType2] = useState("grass");
-  const [moveType, setMoveType] = useState("grass");
+import { typeSelectOptions } from "./_constants/type-select-options";
 
-  const options = [
-    { value: "none", text: "なし" },
-    { value: "normal", text: "ノーマル" },
-    { value: "fire", text: "ほのお" },
-    { value: "water", text: "みず" },
-    { value: "grass", text: "くさ" },
-  ];
+export default function Page() {
+  const [type1, setType1] = useState("normal");
+  const [type2, setType2] = useState("none");
+  const [moveType, setMoveType] = useState("normal");
 
   return (
     <>
@@ -46,27 +40,30 @@ export default function Page() {
             <span className="text-sm">タイプ 1</span>
             <TypeSelect
               name="type1"
-              items={options}
+              items={typeSelectOptions}
               value={type1}
               onValueChange={setType1}
+              disabledItems={["none", type2]}
             />
           </div>
           <div className="flex justify-between items-center">
             <span className="text-sm">タイプ 2</span>
             <TypeSelect
               name="type2"
-              items={options}
+              items={typeSelectOptions}
               value={type2}
               onValueChange={setType2}
+              disabledItems={[type1]}
             />
           </div>
           <div className="flex justify-between items-center">
             <span className="text-sm">わざのタイプ</span>
             <TypeSelect
               name="moveType"
-              items={options}
+              items={typeSelectOptions}
               value={moveType}
               onValueChange={setMoveType}
+              disabledItems={["none"]}
             />
           </div>
         </div>
