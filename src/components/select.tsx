@@ -1,5 +1,5 @@
 import { cn } from "@/lib/cn";
-import { Select as RadixSelect } from "radix-ui";
+import { Select as RadixSelect, ScrollArea } from "radix-ui";
 import { ChevronDown } from "lucide-react";
 import type { ComponentProps } from "react";
 
@@ -53,26 +53,37 @@ export const Select = ({
           "border border-neutral-200 rounded-sm bg-white shadow-md" // Style
         )}
         position="popper"
+        align="center"
       >
-        <RadixSelect.Viewport>
-          {items.map((item) => (
-            <RadixSelect.Item
-              key={item.value}
-              value={item.value}
-              disabled={disabledItems?.includes(item.value)}
-              className={cn(
-                "w-30 h-8", // Size
-                "flex px-1 gap-1 items-center rounded-sm bg-white", // Layout
-                "cursor-pointer hover:bg-neutral-50", // Interaction
-                "data-[highlighted]:outline-none data-[highlighted]:bg-neutral-50" // ハイライト時のスタイルを上書き
-              )}
+        <ScrollArea.Root type="auto">
+          <RadixSelect.Viewport asChild>
+            <ScrollArea.Viewport
+              className="max-h-60"
+              style={{ overflowY: "initial" }} // REF: https://github.com/radix-ui/primitives/issues/2059
             >
-              {renderItemContent?.(item) ?? (
-                <span className="text-sm">{item.text}</span>
-              )}
-            </RadixSelect.Item>
-          ))}
-        </RadixSelect.Viewport>
+              {items.map((item) => (
+                <RadixSelect.Item
+                  key={item.value}
+                  value={item.value}
+                  disabled={disabledItems?.includes(item.value)}
+                  className={cn(
+                    "w-30 h-8", // Size
+                    "flex px-1 gap-1 items-center rounded-sm bg-white", // Layout
+                    "cursor-pointer hover:bg-neutral-50", // Interaction
+                    "data-[highlighted]:outline-none data-[highlighted]:bg-neutral-50" // ハイライト時のスタイルを上書き
+                  )}
+                >
+                  {renderItemContent?.(item) ?? (
+                    <span className="text-sm">{item.text}</span>
+                  )}
+                </RadixSelect.Item>
+              ))}
+            </ScrollArea.Viewport>
+          </RadixSelect.Viewport>
+          <ScrollArea.Scrollbar orientation="vertical" className="w-1">
+            <ScrollArea.Thumb className="rounded-full bg-zinc-200" />
+          </ScrollArea.Scrollbar>
+        </ScrollArea.Root>
       </RadixSelect.Content>
     </RadixSelect.Root>
   );
