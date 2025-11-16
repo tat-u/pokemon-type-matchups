@@ -70,11 +70,12 @@ export const Select = ({
                     "w-30 h-8", // Size
                     "flex px-1 gap-1 items-center rounded-sm bg-white", // Layout
                     "cursor-pointer hover:bg-neutral-50", // Interaction
-                    "data-[highlighted]:outline-none data-[highlighted]:bg-neutral-50" // ハイライト時のスタイルを上書き
+                    "data-[highlighted]:outline-none data-[highlighted]:bg-neutral-50", // Highlighted
+                    "data-[disabled]:text-neutral-200" // Disabled
                   )}
                 >
                   {renderItemContent?.(item) ?? (
-                    <span className="text-sm">{item.text}</span>
+                    <span className="text-sm ">{item.text}</span>
                   )}
                 </RadixSelect.Item>
               ))}
