@@ -1,5 +1,5 @@
 "use client";
-import { getAtkEffectiveness, getDefEffectiveness } from "@/lib/pokemon";
+import { getEffectiveness } from "@/lib/pokemon";
 
 import { useState } from "react";
 
@@ -74,23 +74,28 @@ export default function Page() {
         </div>
 
         <div className="flex flex-col gap-2">
-          {typeSelectOptions.map(({ value, text }) => (
-            <MatchupCard
-              key={value}
-              type={value}
-              text={text}
-              atkEffectiveness={getAtkEffectiveness(
-                moveType as PokemonType,
-                value as PokemonType,
-                null
-              )}
-              defEffectiveness={getDefEffectiveness(
-                type1 as PokemonType,
-                type2 === "none" ? null : (type2 as PokemonType),
-                value as PokemonType
-              )}
-            />
-          ))}
+          {typeSelectOptions.map(({ value, text }) =>
+            value === "none" ? null : (
+              <MatchupCard
+                key={value}
+                type={value}
+                text={text}
+                atkEffectiveness={getEffectiveness(
+                  moveType as PokemonType,
+                  value as PokemonType,
+                  null
+                )}
+                defEffectiveness={
+                  -1 *
+                  getEffectiveness(
+                    value as PokemonType,
+                    type1 as PokemonType,
+                    type2 === "none" ? null : (type2 as PokemonType)
+                  )
+                }
+              />
+            )
+          )}
         </div>
       </main>
     </>
