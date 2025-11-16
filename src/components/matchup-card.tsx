@@ -19,8 +19,8 @@ export const MatchupCard = ({
 }: {
   type: string;
   text: string;
-  atkEffectiveness: -2 | -1 | 0 | 1 | 2;
-  defEffectiveness: -2 | -1 | 0 | 1 | 2 | 3;
+  atkEffectiveness: number;
+  defEffectiveness: number;
 }) => {
   const renderEffectivenessIcon = (
     effectiveness: number,
@@ -44,7 +44,6 @@ export const MatchupCard = ({
         return null;
     }
   };
-
   const getEffectivenessColor = (effectiveness: number) => {
     if (effectiveness > 0) {
       return "text-red-400";

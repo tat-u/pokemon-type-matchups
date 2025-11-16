@@ -1,11 +1,16 @@
 "use client";
+import { getAtkEffectiveness, getDefEffectiveness } from "@/lib/pokemon";
+
 import { useState } from "react";
 
 import { Sword, Shield } from "lucide-react";
 import { Header } from "../components/header";
 import { TypeSelect } from "./_components/type-select";
+import { MatchupCard } from "@/components/matchup-card";
 
 import { typeSelectOptions } from "./_constants/type-select-options";
+
+import type { PokemonType } from "@/models/pokemon";
 
 export default function Page() {
   const [type1, setType1] = useState("normal");
@@ -66,6 +71,26 @@ export default function Page() {
               disabledItems={["none"]}
             />
           </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          {typeSelectOptions.map(({ value, text }) => (
+            <MatchupCard
+              key={value}
+              type={value}
+              text={text}
+              atkEffectiveness={getAtkEffectiveness(
+                moveType as PokemonType,
+                value as PokemonType,
+                null
+              )}
+              defEffectiveness={getDefEffectiveness(
+                type1 as PokemonType,
+                type2 === "none" ? null : (type2 as PokemonType),
+                value as PokemonType
+              )}
+            />
+          ))}
         </div>
       </main>
     </>
