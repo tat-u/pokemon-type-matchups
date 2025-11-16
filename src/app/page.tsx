@@ -5,6 +5,7 @@ import { Sword, Shield, Check } from "lucide-react";
 import { Select as RadixSelect } from "radix-ui";
 import { Header } from "../components/header";
 import { Select } from "../components/select";
+import { TypeLabel } from "@/components/type-label";
 
 export default function Page() {
   const [type1, setType1] = useState("grass");
@@ -52,21 +53,23 @@ export default function Page() {
               onValueChange={setType1}
               renderTriggerContent={(item) => (
                 <>
-                  {/* TODO: 色をタイプに応じて変更する */}
-                  <div className="rounded-full size-4 bg-red-400 shadow-sm" />
+                  <TypeLabel
+                    type={item.value}
+                    className="rounded-full size-4 shadow-sm"
+                  />
                   <span className="text-sm">{item.text}</span>
                 </>
               )}
               renderItemContent={(item) => (
                 <>
-                  {/* TODO: 色をタイプに応じて変更する */}
-                  <div className="rounded-full size-4 bg-red-400 shadow-sm" />
-                  <div className="size-4">
-                    <RadixSelect.ItemIndicator>
-                      <Check className="size-4" />
-                    </RadixSelect.ItemIndicator>
-                  </div>
+                  <TypeLabel
+                    type={item.value}
+                    className="rounded-full size-4 shadow-sm"
+                  />
                   <span className="text-sm">{item.text}</span>
+                  <RadixSelect.ItemIndicator>
+                    <Check className="size-4" />
+                  </RadixSelect.ItemIndicator>
                 </>
               )}
             />

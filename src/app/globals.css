@@ -9,6 +9,26 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 }
+@theme {
+  --color-type-normal: #a1abb3;
+  --color-type-fire: #c73637;
+  --color-type-water: #2975d6;
+  --color-type-electric: #edbd05;
+  --color-type-grass: #37a320;
+  --color-type-ice: #2fbfcf;
+  --color-type-fighting: #de7400;
+  --color-type-poison: #8f4ac4;
+  --color-type-ground: #804a1f;
+  --color-type-flying: #78a9db;
+  --color-type-psychic: #d64777;
+  --color-type-bug: #8a9919;
+  --color-type-rock: #a8a37b;
+  --color-type-ghost: #6e346e;
+  --color-type-dragon: #4959d1;
+  --color-type-dark: #4a3733;
+  --color-type-steel: #62a2b9;
+  --color-type-fairy: #e667e6;
+}
 
 body {
   background: var(--background);
